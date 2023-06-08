@@ -3,71 +3,80 @@
 <head>
   <title>Simple Map</title>
   <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
-
   <link rel="stylesheet" type="text/css" href="./style.css" />
-  <script type="module" src="./index.js"></script>
+  <script type="module" src="index.js"></script>
+  <script type="module" src="./indextests.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 
 <body>
-  <div class="container">
-*
-    <main class="content">
-      <section class="box register-form">
-        <div class="form-content">
-            <input id="titulo" type="text" placeholder="Digite o nome do evento" name="titulo">
-            <input id="descricao" type="text" placeholder="Digite a descricao" name="descricao">
-          </br>
-            <label for="dataInicio">Data Início</label>
-            <input id="dataInicio" type="date" name="dataInicio">
-            <label for="dataInicio">Data Término</label>
-            <input id="dataTermino" type="date" name="dataTermino">
-          </br>
-            <button id="save-event">
-              <h4>Salvar evento</h4>
-            </button>
+  <section class="map">
+    <div class="container">
+
+      <div class="content">
+
+        <!-- prettier-ignore -->
+        <div id="map">
         </div>
-      </section>
+        <script>(g => { var h, a, k, p = "The Google Maps JavaScript API", c = "google", l = "importLibrary", q = "__ib__", m = document, b = window; b = b[c] || (b[c] = {}); var d = b.maps || (b.maps = {}), r = new Set, e = new URLSearchParams, u = () => h || (h = new Promise(async (f, n) => { await (a = m.createElement("script")); e.set("libraries", [...r] + ""); for (k in g) e.set(k.replace(/[A-Z]/g, t => "_" + t[0].toLowerCase()), g[k]); e.set("callback", c + ".maps." + q); a.src = `https://maps.${c}apis.com/maps/api/js?` + e; d[q] = f; a.onerror = () => h = n(Error(p + " could not load.")); a.nonce = m.querySelector("script[nonce]")?.nonce || ""; m.head.append(a) })); d[l] ? console.warn(p + " only loads once. Ignoring:", g) : d[l] = (f, ...n) => r.add(f) && u().then(() => d[l](f, ...n)) })
+            ({ key: "", v: "weekly" });
+        </script>
+        <div class="title-header">
+          <div class="title">
+            <h1> MARCADOR DE EVENTOS </h1>
+          </div>
+        </div>
+        <div class="menu-bar">
+          <button id="menuBarButton">
+            <img id="menuBar" src="./img/menu-bars.svg" alt="menu-bars" class="">
+          </button>
+        </div>
+      </div>
 
-      <section class="box show-map">
-        <div class="box map-content">
+      <div class="event-list">
+        <div class="exit">
+          <button id="exitListButton">
+            <img id="exitList" src="./img/exit-list.svg" alt="exit-list" class="">
+          </button>
+        </div>
 
-          <div class="map-and-events">
-            <div class="event-list">
-              <!-- <div class="event-card">
-                <div class="icon-event-list">
-                  <img src="./img/icon-event-list.svg" alt="event-list-icon" width="30px">
-                </div>
-      
-                  <div class="event-desc">
-                    <p>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</p>
-                  </div>
-              
-                <div class="button-go-to-event">
-                  <button id="go-to-event"><p>Ver</p></button>
-                </div>
-              </div> -->
+        <div class="search">
+          <input class="text" id="searchEvent">
+          <div class="date-search">
+            <div class="date-ini">
+              <label for="dataInicio">Data de inicio</label>
+              <input type="date" name="dataInicio" id="">
             </div>
-            <div id="map"></div>
+            <div class="date-end">
+              <label for="dataInicio">Data de fim</label>
+              <input type="date" name="dataFim" id="dataFim">
+            </div>
           </div>
-    
-          <!-- prettier-ignore -->
-          <script>(g => { var h, a, k, p = "The Google Maps JavaScript API", c = "google", l = "importLibrary", q = "__ib__", m = document, b = window; b = b[c] || (b[c] = {}); var d = b.maps || (b.maps = {}), r = new Set, e = new URLSearchParams, u = () => h || (h = new Promise(async (f, n) => { await (a = m.createElement("script")); e.set("libraries", [...r] + ""); for (k in g) e.set(k.replace(/[A-Z]/g, t => "_" + t[0].toLowerCase()), g[k]); e.set("callback", c + ".maps." + q); a.src = `https://maps.${c}apis.com/maps/api/js?` + e; d[q] = f; a.onerror = () => h = n(Error(p + " could not load.")); a.nonce = m.querySelector("script[nonce]")?.nonce || ""; m.head.append(a) })); d[l] ? console.warn(p + " only loads once. Ignoring:", g) : d[l] = (f, ...n) => r.add(f) && u().then(() => d[l](f, ...n)) })
-              ({ key: "", v: "weekly" });
-          </script>
-          <div class="show-event-button">
-            <button id="show-event"><img src="./img/show-event-icon.svg" alt="header-icon" width="20px" height="20px">
-              <p id="show-event-text">Mostrar eventos</p>
-            </button>
-          </div>
-          </div>
-
         </div>
-      </section>
-    </main>
 
-  </div>
 
-  
+        <div class="card">
+          <div id="card-title">Passear com o cachorro</div>
+          <div id="desc">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Laudantium libero laboriosam
+            perspiciatis dolorem sunt suscipit accusamus dignissimos illum similique tempora vitae assumenda eos quaerat
+            quo quae, odit rerum labore voluptatibus?</div>
+          <div id="dates">
+            <b>
+              Data Inicio:
+            </b>
+             06/08/2023
+             <b>
+              Data Fim: 
+             </b>
+            06/08/2023
+          </div>
+          <div id="showButton">
+            <button>Mostrar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 </body>
 
 </html>
