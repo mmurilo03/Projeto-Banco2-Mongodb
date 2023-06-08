@@ -7,7 +7,7 @@ let mapPin;
 let mapPinShowEvent;
 let mapPinFocusEvent;
 
-let inputEvent = document.querySelector('#nome');
+let inputEvent = document.querySelector('#titulo');
 
 
 async function initMap() {
@@ -25,7 +25,7 @@ async function initMap() {
 
   map.addListener("click", (event) => {
     isClicked = true;
-    console.log(`lat: ${event.latLng.lat()}, lng: ${event.latLng.lng()}`);
+    // console.log(`lat: ${event.latLng.lat()}, lng: ${event.latLng.lng()}`);
     marker.position = { lat: event.latLng.lat(), lng: event.latLng.lng() }
     marker.setPosition(event.latLng)
   })
@@ -50,8 +50,8 @@ buttonSave.addEventListener('click', async () => {
   if (isClicked) {
     if (inputEvent.value !== '') {
       await salvar()
-      await mostrar()
-      await mostrar()
+      // await mostrar()
+      // await mostrar()
     }
     else {
       inputWarning()
@@ -70,28 +70,21 @@ buttonMostrar.addEventListener('click', () => {
 
 async function salvar() {
   const obj = {
-    nome: document.getElementById('nome').value,
+    titulo: inputEvent.value,
+    descricao: document.querySelector('#descricao').value,
+    dataInicio: document.querySelector('#dataInicio').value,
+    dataTermino: document.querySelector('#dataTermino').value,
     lat: marker.getPosition().lat(),
     lng: marker.getPosition().lng()
   };
 
-  console.log(obj);
-
-  await fetch("http://localhost:3000/pontos/sincronizar", {
-    method: 'GET',
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json',
-      // 'Access-Control-Allow-Origin': 'http://127.0.0.1:5500/src/index.html'
-    }
-  })
+  // console.log(obj);
 
   fetch("http://localhost:3000/pontos", {
     method: 'POST',
     headers: {
       'Accept': 'application/json',
       'Content-Type': 'application/json',
-      // 'Access-Control-Allow-Origin': '*'
     },
     body: JSON.stringify(obj)
   }).then(response => {
@@ -106,13 +99,6 @@ async function salvar() {
 
 async function mostrar() {
   if (markers.length === 0) {
-    await fetch("http://localhost:3000/pontos/sincronizar", {
-      method: 'GET',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      }
-    })
 
     const response = await fetch("http://localhost:3000/pontos", {
       method: 'GET',
@@ -122,6 +108,7 @@ async function mostrar() {
       },
     })
     const eventos = await response.json()
+    console.log(eventos[0]);
 
     mapPinShowEvent = {
       url: "./img/map-pin-show-event.svg", // url
@@ -134,11 +121,11 @@ async function mostrar() {
     };
 
     for (let evento of eventos) {
-
+      // console.log("LAT: " + evento.localizacao.split(" ")[1]);
       let markerSalvo = new google.maps.Marker({
-        position: { lat: evento.geometria.coordinates[1], lng: evento.geometria.coordinates[0] },
+        position: { lat: Number(evento.localizacao.split(" ")[1]), lng: Number(evento.localizacao.split(" ")[0]) },
         map,
-        title: evento.descricao,
+        title: evento.titulo,
         icon: mapPinShowEvent,
       })
       createCard(evento, eventos.indexOf(evento))
@@ -193,7 +180,7 @@ function createCard(evento, index) {
   icon.src = './img/icon-event-list.svg'
 
   let descEvent = document.createElement('h3')
-  descEvent.textContent = evento.descricao
+  descEvent.textContent = evento.titulo
 
   let eventDescDiv = document.createElement('div')
   eventDescDiv.classList.add('event-desc')
