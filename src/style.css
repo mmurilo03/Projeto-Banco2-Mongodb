@@ -60,7 +60,7 @@ button:hover{
   display: flex;
   justify-content: center;
   align-items: center;
-  flex-direction: column;
+  flex-direction: row;
 }
 
 .content {
@@ -202,8 +202,8 @@ button:hover{
   background-color: #fff;
   display: flex;
   align-items: center;
-  justify-content: space-around;
-  height: 7vh;
+  justify-content: center;
+  height: 22vh;
   border-radius: 0.5vw;
   box-shadow: 1px 2px 4px rgb(117, 117, 117);
 }
@@ -250,4 +250,16 @@ button:hover{
 #hide-event{
   margin-top: 1vw;
   width: 10vw;
+}
+
+#dataInicio,
+#dataTermino,
+#latitude,
+#longitude{
+  width: 10vw;
+}
+
+#latitude,
+#longitude{
+  height: 2vw;
 }

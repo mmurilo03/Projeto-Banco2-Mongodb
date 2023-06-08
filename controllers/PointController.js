@@ -15,7 +15,6 @@ const salvarPonto = async (req, res) => {
     dataTermino: req.body.dataTermino,
     localizacao: `${req.body.lng} ${req.body.lat}`,
   };
-  console.log(obj);
   const point = await Point.create(obj)
     .then((result) => result)
     .catch((e) => res.status(400).send(e));
