@@ -12,7 +12,6 @@ let inputEvent = document.querySelector('#titulo');
 
 async function initMap() {
   //@ts-ignore
-  listEvents.classList.add('hide')
 
   const { Map } = await google.maps.importLibrary("maps");
 
