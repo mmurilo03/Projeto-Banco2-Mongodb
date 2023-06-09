@@ -5,26 +5,59 @@
 }
 
 ::-webkit-scrollbar {
-  width: 1vw;
+  width: 0.5vw;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #011F39;
+  background-color: #3582c5;
   border-radius: 1vw;
+}
+
+button {
+  cursor: pointer;
+  outline: 0;
+  color: #011F39;
+  background-color: #fff;
+  border-color: #fff;
+  display: inline-block;
+  font-weight: 400;
+  line-height: 1.5;
+  text-align: center;
+  border: 0.1vw solid transparent;
+  padding: 0.2vw 0.4vw;
+  font-size: 1vw;
+  border-radius: .25rem;
+  transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+}
+
+button:hover {
+  color: #fff;
+  background-color: #0559a1;
+  border-color: #0559a1;
 }
 
 /*Header*/
 
-.title-header{
+.title-header {
   position: absolute;
   display: flex;
   justify-content: center;
   align-items: center;
   width: 100%;
   pointer-events: none;
+  color: #011F39;
+  font-weight: bold;
 }
 
-.title{
+.title-header img {
+  width: 2vw;
+}
+
+.title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1vw;
   margin-top: 1vw;
   text-align: center;
   background-color: #fff;
@@ -38,6 +71,7 @@
 body {
   width: 100%;
   height: 100%;
+  overflow: hidden;
 }
 
 .container {
@@ -49,6 +83,7 @@ body {
 .content {
   width: 100%;
   height: 100%;
+
 }
 
 #map {
@@ -84,12 +119,13 @@ body {
 }
 
 #menuBarButton,
+#exitForm,
 #exitListButton {
   all: unset;
-  cursor: pointer;
+  cursor:pointer;
 }
 
-#menuBar{
+#menuBar {
   height: 3vw;
   width: 3vw;
 }
@@ -122,18 +158,19 @@ body {
   width: 1vw;
 }
 
-.search{
+.search {
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
   padding-top: 1vw;
+  padding-left: 0.1vw;
   width: 100%;
 }
 
-.date-search{
+.date-search {
   width: 100%;
-  padding-top: 1vw ;
+  padding-top: 1vw;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -141,67 +178,204 @@ body {
   gap: 1.5vw;
 }
 
-.date-search label{
+.date-search label {
   font-size: 1vw;
 }
 
-.exit{
+.exit {
   display: flex;
   justify-content: flex-end;
   padding-top: 1.5vw;
 }
 
-#searchEvent{
+
+#searchEvent {
+  padding-left: 2vw;
   width: 20vw;
   height: 2vw;
+  background-image: url(./img/search-icon.svg);
+  background-size: 1vw 1vw;
+  background-repeat: no-repeat;
+  background-position: 0.4vw 0.3vw;
 }
 
 .date-ini,
-.date-end{
+.date-end {
   display: flex;
   flex-direction: column;
 }
 
 /*Card*/
 
+.cards{
+  margin-top: 1vw;
+  overflow: auto;
+  height: 80vh;
+  cursor: default;
+}
 
-.card{
+.card {
   margin-top: 1vw;
   margin-left: 0.5vw;
+  margin-right: 0.5vw;
   background-color: #011F39;
   color: white;
   display: flex;
   flex-direction: column;
-  border-radius: 0.2vw;
+  border-radius: 0.3vw;
   gap: 1vw;
-  -webkit-box-shadow: -1px 12px 34px -28px rgba(0,0,0,0.75);
--moz-box-shadow: -1px 12px 34px -28px rgba(0,0,0,0.75);
-box-shadow: -1px 12px 34px -28px rgba(0,0,0,0.75);
+  -webkit-box-shadow: -1px 12px 34px -28px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: -1px 12px 34px -28px rgba(0, 0, 0, 0.75);
+  box-shadow: -1px 12px 34px -28px rgba(0, 0, 0, 0.75);
 }
 
-#card-title{
+.card-title {
   font-size: 1.2vw;
+  border-radius: 0.3vw;
   padding-top: 1vw;
   padding-left: 1vw;
   background-color: #043057;
   padding-bottom: 0.5vw;
 }
 
-#desc{
+.desc {
   font-size: 0.9vw;
   padding-left: 0.5vw;
+  padding-right: 0.5vw;
 
-  
+
 }
 
-#dates{
+.dates {
   font-size: 0.9vw;
   padding-left: 0.5vw;
 }
 
-#showButton{
+.showButton {
   display: flex;
   justify-content: flex-end;
   padding-right: 1vw;
   padding-bottom: 1vw;
 }
+
+.card-title,
+.desc,
+.dates{
+  pointer-events: none;
+}
+
+/*Form registro*/
+
+.form-register {
+  height: 60%;
+  width: 25%;
+  transition: width 0.5s ease-in;
+  margin-top: 7vw;
+  right: 6vw;
+  position: absolute;
+  margin-right: 10px;
+  background-color: white;
+  -webkit-box-shadow: 4px 2px 25px -1px rgba(0, 0, 0, 0.52);
+  -moz-box-shadow: 4px 2px 25px -1px rgba(0, 0, 0, 0.52);
+  box-shadow: 4px 2px 25px -1px rgba(0, 0, 0, 0.52);
+}
+
+.exit-form{
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+}
+
+#exitForm{
+  all: unset;
+  margin-top: 0.5vw;
+  padding-right: 0.5vw;
+}
+
+#exitFormIcon{
+  width: 1vw;
+  padding-right: 90%;
+}
+
+.title-form{
+  text-align: center;
+  padding-top: 1vw;
+  font-size: 1.3vw;
+  pointer-events: none;
+}
+
+.title-form h2{
+  font-size: 1vw;
+  opacity: 60%;
+  font-weight: lighter;
+}
+
+.infos-event{
+  padding-top: 1vw;
+  padding-left: 1vw;
+  display: flex;
+  flex-direction: column;
+  gap: 1vw;
+}
+
+.title-event input{
+  width: 22vw;
+  height: 1.5vw;
+}
+
+.desc-event textarea{
+  width: 22vw;
+  height: 6vw;
+}
+
+.date-form{
+  font-size: 1vw;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 2vw;
+  width: 100%;
+}
+
+.date-ini-form{
+  width: 10vw;
+}
+
+.date-end-form{
+  width: 10vw;
+}
+
+.date-ini-form input,
+.date-end-form input{
+  width: 10vw;
+}
+
+.button-event-form{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 2.5vw;
+}
+
+#buttonEvent{
+  background-color: #011F39;
+  color: white;
+  width: 15vw;
+  height: 2.5vw;
+}
+
+#buttonEvent:hover{
+  background-color: #0559a1;
+}
+
+.form-register.hide{
+  width: 0;
+  height: 0;
+  pointer-events: none;
+  display: none;
+}
+
+#exitForm{
+  cursor: pointer;
+}
+
