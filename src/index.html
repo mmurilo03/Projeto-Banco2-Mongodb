@@ -23,13 +23,56 @@
         </script>
         <div class="title-header">
           <div class="title">
+            <img src="./img/header-icon.svg" alt="" srcset="">
             <h1> MARCADOR DE EVENTOS </h1>
+            
           </div>
         </div>
         <div class="menu-bar">
           <button id="menuBarButton">
             <img id="menuBar" src="./img/menu-bars.svg" alt="menu-bars" class="">
           </button>
+        </div>
+
+        <div class="form-register">
+          <div class="exit-form">
+          <button id="exitForm">
+          <img src="./img/exit-list.svg" alt="exitForm" id="exitFormIcon">
+          </button>
+          </div>
+          <div class="title-form">
+            <h1><b>REGISTRAR EVENTO</b></h1>
+            <h2>389218312, -21381283</h2>
+          </div>
+          <div class="infos-event">
+            <div class="title-event">
+              <label for="titleEvent">Nome do evento</label>
+            </br>
+              <input type="text" id="titleEvent">
+            </div>
+            <div class="desc-event">
+              <label for="descEvent">Descrição do evento</label>
+            </br>
+            <textarea name="descEvent" id="" cols="30" rows="12"></textarea>
+            </div>
+
+            <div class="date-form">
+              <div class="date-ini-form">
+                <label for="date-ini-form">Data Início</label>
+                <input type="date" name="date-ini-form" id="">
+              </div>
+              <div class="date-end-form">
+                <label for="date-end-form"> Data Termino</label>
+                <input type="date" name="date-end-form" id="">
+              </div>
+            </div>
+
+
+           
+          </div>
+          <div class="button-event-form">
+            <button id="buttonEvent">Salvar evento</button>
+          </div>
         </div>
       </div>
 
@@ -39,9 +82,10 @@
             <img id="exitList" src="./img/exit-list.svg" alt="exit-list" class="">
           </button>
         </div>
-
         <div class="search">
-          <input class="text" id="searchEvent">
+          <div class="input-search">
+            <input class="text" id="searchEvent" name="searchEvent" placeholder="Digite o nome do evento">
+          </div>
           <div class="date-search">
             <div class="date-ini">
               <label for="dataInicio">Data de inicio</label>
@@ -53,29 +97,71 @@
             </div>
           </div>
         </div>
-
-
-        <div class="card">
-          <div id="card-title">Passear com o cachorro</div>
-          <div id="desc">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Laudantium libero laboriosam
-            perspiciatis dolorem sunt suscipit accusamus dignissimos illum similique tempora vitae assumenda eos quaerat
-            quo quae, odit rerum labore voluptatibus?</div>
-          <div id="dates">
-            <b>
-              Data Inicio:
-            </b>
-             06/08/2023
-             <b>
-              Data Fim: 
-             </b>
-            06/08/2023
+        <div class="cards">
+          <div class="card">
+            <div class="card-title">Passear com o cachorro</div>
+            <div class="desc">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Laudantium libero laboriosam
+              perspiciatis dolorem sunt suscipit accusamus dignissimos illum similique tempora vitae assumenda eos quaerat
+              quo quae, odit rerum labore voluptatibus?</div>
+            <div class="dates">
+              <b>
+                Data Inicio:
+              </b>
+               06/08/2023
+               <b>
+                Data Fim: 
+               </b>
+              06/08/2023
+            </div>
+            <div class="showButton">
+              <button id="showButton">Mostrar</button>
+            </div>
           </div>
-          <div id="showButton">
-            <button>Mostrar</button>
+          <div class="card">
+            <div class="card-title">Passear com o cachorro</div>
+            <div class="desc">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Laudantium libero laboriosam
+              perspiciatis dolorem sunt suscipit accusamus dignissimos illum similique tempora vitae assumenda eos quaerat
+              quo quae, odit rerum labore voluptatibus?</div>
+            <div class="dates">
+              <b>
+                Data Inicio:
+              </b>
+               06/08/2023
+               <b>
+                Data Fim: 
+               </b>
+              06/08/2023
+            </div>
+            <div class="showButton">
+              <button id="showButton">Mostrar</button>
+            </div>
+          </div>
+  
+          <div class="card">
+            <div class="card-title">Passear com o cachorro</div>
+            <div class="desc">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Laudantium libero laboriosam
+              perspiciatis dolorem sunt suscipit accusamus dignissimos illum similique tempora vitae assumenda eos quaerat
+              quo quae, odit rerum labore voluptatibus?</div>
+            <div class="dates">
+              <b>
+                Data Inicio:
+              </b>
+               06/08/2023
+               <b>
+                Data Fim: 
+               </b>
+              06/08/2023
+            </div>
+            <div class="showButton">
+              <button id="showButton">Mostrar</button>
+            </div>
           </div>
         </div>
+        
       </div>
     </div>
+
+   
   </section>
 </body>
 
