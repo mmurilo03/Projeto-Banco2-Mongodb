@@ -5,7 +5,6 @@
   <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
   <link rel="stylesheet" type="text/css" href="./style.css" />
   <script type="module" src="index.js"></script>
-  <script type="module" src="./indextests.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 
@@ -34,7 +33,7 @@
           </button>
         </div>
 
-        <div class="form-register">
+        <div class="form-register hide">
           <div class="exit-form">
           <button id="exitForm">
           <img src="./img/exit-list.svg" alt="exitForm" id="exitFormIcon">
@@ -48,27 +47,25 @@
             <div class="title-event">
               <label for="titleEvent">Nome do evento</label>
             </br>
-              <input type="text" id="titleEvent">
+              <input type="text" id="titulo">
             </div>
             <div class="desc-event">
               <label for="descEvent">Descrição do evento</label>
             </br>
-            <textarea name="descEvent" id="" cols="30" rows="12"></textarea>
+            <textarea id="descricao"name="descEvent" cols="30" rows="12"></textarea>
             </div>
 
             <div class="date-form">
               <div class="date-ini-form">
-                <label for="date-ini-form">Data Início</label>
-                <input type="date" name="date-ini-form" id="">
+                <label for="dataIni">Data Início</label>
+                <input id="dataIni" type="date" name="dataIni">
               </div>
               <div class="date-end-form">
-                <label for="date-end-form"> Data Termino</label>
-                <input type="date" name="date-end-form" id="">
+                <label for="dataFim"> Data Termino</label>
+                <input id="dataFim" type="date" name="dataFim">
               </div>
             </div>
 
-
-           
           </div>
           <div class="button-event-form">
             <button id="buttonEvent">Salvar evento</button>
@@ -98,45 +95,6 @@
           </div>
         </div>
         <div class="cards">
-          <div class="card">
-            <div class="card-title">Passear com o cachorro</div>
-            <div class="desc">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Laudantium libero laboriosam
-              perspiciatis dolorem sunt suscipit accusamus dignissimos illum similique tempora vitae assumenda eos quaerat
-              quo quae, odit rerum labore voluptatibus?</div>
-            <div class="dates">
-              <b>
-                Data Inicio:
-              </b>
-               06/08/2023
-               <b>
-                Data Fim: 
-               </b>
-              06/08/2023
-            </div>
-            <div class="showButton">
-              <button id="showButton">Mostrar</button>
-            </div>
-          </div>
-          <div class="card">
-            <div class="card-title">Passear com o cachorro</div>
-            <div class="desc">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Laudantium libero laboriosam
-              perspiciatis dolorem sunt suscipit accusamus dignissimos illum similique tempora vitae assumenda eos quaerat
-              quo quae, odit rerum labore voluptatibus?</div>
-            <div class="dates">
-              <b>
-                Data Inicio:
-              </b>
-               06/08/2023
-               <b>
-                Data Fim: 
-               </b>
-              06/08/2023
-            </div>
-            <div class="showButton">
-              <button id="showButton">Mostrar</button>
-            </div>
-          </div>
-  
           <div class="card">
             <div class="card-title">Passear com o cachorro</div>
             <div class="desc">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Laudantium libero laboriosam
