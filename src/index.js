@@ -5,12 +5,12 @@ let isClicked;
 let mapPin;
 let mapPinShowEvent;
 let mapPinFocusEvent;
+let showList = false;
 
-let inputEvent = document.querySelector('#titulo');
 
-
-/*Divs*/
+/*Elements*/
 let form = document.querySelector('.form-register')
+let inputEvent = document.querySelector('#titulo');
 let listEvents = document.querySelector('.event-list');
 
 
@@ -30,6 +30,8 @@ async function initMap() {
   map.addListener("click", (event) => {
     isClicked = true;
     showForm();
+    let coordinates = document.querySelector('#coordinates')
+    coordinates.textContent = `${event.latLng.lat()}, ${event.latLng.lng()}`
     marker.position = { lat: event.latLng.lat(), lng: event.latLng.lng() }
     marker.setPosition(event.latLng)
   })
@@ -51,8 +53,21 @@ initMap();
 
 /*Salvar*/
 let buttonSave = document.querySelector('#buttonEvent')
-buttonSave.addEventListener('click', () => {
-  salvar();
+buttonSave.addEventListener('click', async () => {
+  if(isClicked && !showList){
+    await salvar();
+    await mostrar();
+    await mostrar();
+  }
+
+  if(isClicked && showList){
+    await mostrar();
+    removeCardEvents();
+    showCardEvents();
+    await salvar();
+    await mostrar();
+  }
+  
 })
 
 async function salvar() {
@@ -64,7 +79,6 @@ async function salvar() {
     lat: marker.getPosition().lat(),
     lng: marker.getPosition().lng()
   };
-
 
   fetch("http://localhost:3000/pontos", {
     method: 'POST',
@@ -84,17 +98,6 @@ async function salvar() {
 }
 
 /*Mostrar lista*/
-let showListButton = document.querySelector('#menuBarButton')
-
-showListButton.addEventListener('click', () => {
-  listEvents.classList.remove('hide')
-  mostrar();
-})
-
-let buttonExitList = document.querySelector('#exitListButton')
-buttonExitList.addEventListener('click', () => {
-  listEvents.classList.add('hide')
-})
 
 async function mostrar() {
   const response = await fetch("http://localhost:3000/pontos", {
@@ -117,7 +120,6 @@ async function mostrar() {
   };
 
   for (let evento of eventos) {
-    // console.log("LAT: " + evento.localizacao.split(" ")[1]);
     let markerSalvo = new google.maps.Marker({
       position: { lat: Number(evento.localizacao.split(" ")[1]), lng: Number(evento.localizacao.split(" ")[0]) },
       map,
@@ -130,6 +132,42 @@ async function mostrar() {
     createCard(evento, eventos.indexOf(evento))
     markers.push(markerSalvo)
   }
+}
+
+let showListButton = document.querySelector('#menuBarButton')
+
+
+showListButton.addEventListener('click', () => {
+  removeCardEvents();
+  showList = true;
+  listEvents.classList.remove('hide')
+  mostrar();
+  showCardEvents();
+})
+
+function showCardEvents(){
+  for (let markerSalvo of markers) {
+    markerSalvo.setMap(null)
+    let card = document.createElement('div');
+    card.classList.add('card')
+  }
+}
+
+let buttonExitList = document.querySelector('#exitListButton')
+buttonExitList.addEventListener('click', () => {
+  showList = false;
+  listEvents.classList.add('hide')
+  removeCardEvents();
+})
+
+function removeCardEvents(){
+  for (let markerSalvo of markers) {
+    markerSalvo.setMap(null)
+    let cards = document.querySelector('.cards');
+    let card = document.querySelector('.card')
+    cards.removeChild(card)
+  }
+  markers = [];
 }
 
 /*Form*/
