@@ -9,9 +9,12 @@ let showList = false;
 
 
 /*Elements*/
-let form = document.querySelector('.form-register')
+let form = document.querySelector('.form-register');
 let inputEvent = document.querySelector('#titulo');
 let listEvents = document.querySelector('.event-list');
+let descricao = document.querySelector('#descricao');
+let dataInicio = document.querySelector('#dataIni');
+let dataTermino = document.querySelector('#dataFim');
 
 
 
@@ -54,18 +57,25 @@ initMap();
 /*Salvar*/
 let buttonSave = document.querySelector('#buttonEvent')
 buttonSave.addEventListener('click', async () => {
-  if(isClicked && !showList){
-    await salvar();
-    await mostrar();
-    await mostrar();
-  }
+  if(inputEvent.value === ''){
+    inputWarning();
+  }else if(isClicked === false){
+    createMarkerWarning();
+  }else{
+    if(isClicked && !showList){
+      await salvar();
+      await mostrar();
+      await mostrar();
+    }
+  
+    if(isClicked && showList){
+      await mostrar();
+      removeCardEvents();
+      showCardEvents();
+      await salvar();
+      await mostrar();
+    }
 
-  if(isClicked && showList){
-    await mostrar();
-    removeCardEvents();
-    showCardEvents();
-    await salvar();
-    await mostrar();
   }
   
 })
@@ -73,9 +83,9 @@ buttonSave.addEventListener('click', async () => {
 async function salvar() {
   const obj = {
     titulo: inputEvent.value,
-    descricao: document.querySelector('#descricao').value,
-    dataInicio: document.querySelector('#dataIni').value,
-    dataTermino: document.querySelector('#dataFim').value,
+    descricao: descricao.value,
+    dataInicio: dataInicio.value,
+    dataTermino: dataTermino.value,
     lat: marker.getPosition().lat(),
     lng: marker.getPosition().lng()
   };
@@ -210,4 +220,66 @@ function createCard(object) {
   showButton.textContent = 'Mostrar'
   divButton.appendChild(showButton)
   card.appendChild(divButton)
+}
+
+function sucessButton() {
+  setTimeout(() => {
+    buttonSave.style.background = '#011F39'; //blue
+    buttonSave.textContent = 'Salvar evento';
+    buttonSave.style.cursor = 'pointer'
+    buttonSave.disabled = false;
+  }, 2000);
+  buttonSave.style.transition = '0.2s ease-in'
+  buttonSave.style.background = '#53a653'; //green
+  buttonSave.textContent = 'Salvo!'
+  buttonSave.style.cursor = 'not-allowed'
+  buttonSave.disabled = true;
+
+
+  inputEvent.value = '';
+  descricao.value = '';
+  dataInicio.value = '';
+  dataTermino.value = '';
+}
+
+function createMarkerWarning() {
+  setTimeout(() => {
+    buttonSave.style.background = '#011F39'; //blue
+    buttonSave.textContent = 'Salvar evento';
+    buttonSave.style.cursor = 'pointer'
+    buttonSave.disabled = false;
+  }, 2000);
+  buttonSave.style.transition = '0.2s ease-in'
+  buttonSave.style.background = '#A9A9A9'; //yellow
+  buttonSave.textContent = 'Crie um marcador'
+  buttonSave.style.cursor = 'not-allowed'
+  buttonSave.disabled = true;
+}
+
+function inputWarning() {
+  setTimeout(() => {
+    buttonSave.style.background = '#011F39'; //blue
+    buttonSave.textContent = 'Salvar evento';
+    buttonSave.style.cursor = 'pointer'
+    buttonSave.disabled = false;
+  }, 2000);
+  buttonSave.style.transition = '0.2s ease-in'
+  buttonSave.style.background = '#ff3333'; //yellow
+  buttonSave.textContent = 'Digite o nome'
+  buttonSave.style.cursor = 'not-allowed'
+  buttonSave.disabled = true;
+}
+
+function errorButton(){
+  setTimeout(() => {
+    buttonSave.style.background = '#011F39'; //blue
+    buttonSave.textContent = 'Salvar evento';
+    buttonSave.style.cursor = 'pointer'
+    buttonSave.disabled = false;
+  }, 3000);
+  buttonSave.style.transition = '0.3s ease-in'
+  buttonSave.style.background = '#ff3333'; //red
+  buttonSave.textContent = 'Erro!'
+  buttonSave.style.cursor = 'not-allowed'
+  buttonSave.disabled = true;
 }
