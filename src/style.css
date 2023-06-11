@@ -229,14 +229,32 @@ body {
   box-shadow: -1px 12px 34px -28px rgba(0, 0, 0, 0.75);
 }
 
-.card-title {
+.card-header {
   font-size: 1.2vw;
   border-radius: 0.3vw;
   padding-top: 1vw;
   padding-left: 1vw;
   background-color: #043057;
   padding-bottom: 0.5vw;
+  display: flex;
+  justify-content: space-between;
 }
+
+.card-actions button{
+  all: unset;
+  cursor: pointer;
+}
+
+.card-actions img{
+  width: 1vw;
+}
+
+.card-actions{
+  display: flex;
+  gap: 0.5vw;
+  margin-right: 1.5vw;
+}
+
 
 .desc {
   font-size: 0.9vw;
@@ -267,9 +285,8 @@ body {
 /*Form registro*/
 
 .form-register {
-  height: 60%;
-  width: 25%;
-  transition: width 0.5s ease-in;
+  height: 60vh;
+  width: 25vw;
   margin-top: 7vw;
   right: 6vw;
   position: absolute;
@@ -357,14 +374,16 @@ body {
   padding-top: 2.5vw;
 }
 
-#buttonEvent{
+#buttonEvent,
+#buttonChange{
   background-color: #011F39;
   color: white;
   width: 15vw;
   height: 2.5vw;
 }
 
-#buttonEvent:hover{
+#buttonEvent:hover,
+#buttonChange:hover{
   background-color: #0559a1;
 }
 
