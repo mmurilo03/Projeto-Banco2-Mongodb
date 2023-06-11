@@ -6,12 +6,16 @@ let mapPin;
 let mapPinShowEvent;
 let mapPinFocusEvent;
 let showList = false;
+let editing;
 
 
 /*Elements*/
-let form = document.querySelector('.form-register')
+let form = document.querySelector('.form-register');
 let inputEvent = document.querySelector('#titulo');
 let listEvents = document.querySelector('.event-list');
+let descricao = document.querySelector('#descricao');
+let dataInicio = document.querySelector('#dataIni');
+let dataTermino = document.querySelector('#dataFim');
 
 
 
@@ -29,6 +33,12 @@ async function initMap() {
 
   map.addListener("click", (event) => {
     isClicked = true;
+    console.log(editing)
+    if(editing){
+      hideFormEdit();
+      let buttonForm = document.querySelector('.button-event-form')
+      buttonForm.replaceChild(buttonSave, buttonChange)
+    }
     showForm();
     let coordinates = document.querySelector('#coordinates')
     coordinates.textContent = `${event.latLng.lat()}, ${event.latLng.lng()}`
@@ -53,19 +63,29 @@ initMap();
 
 /*Salvar*/
 let buttonSave = document.querySelector('#buttonEvent')
+let buttonChange = document.createElement('button');
 buttonSave.addEventListener('click', async () => {
-  if(isClicked && !showList){
-    await salvar();
-    await mostrar();
-    await mostrar();
-  }
+  buttonSave.textContent = 'Salvar evento'
+  console.log('Salvar')
+  if(inputEvent.value === ''){
+    inputWarning();
+  }else if(isClicked === false){
+    createMarkerWarning();
+  }else{
+    if(isClicked && !showList){
+      await salvar();
+      await mostrar();
+      await mostrar();
+    }
+  
+    if(isClicked && showList){
+      await mostrar();
+      removeCardEvents();
+      showCardEvents();
+      await salvar();
+      await mostrar();
+    }
 
-  if(isClicked && showList){
-    await mostrar();
-    removeCardEvents();
-    showCardEvents();
-    await salvar();
-    await mostrar();
   }
   
 })
@@ -73,9 +93,9 @@ buttonSave.addEventListener('click', async () => {
 async function salvar() {
   const obj = {
     titulo: inputEvent.value,
-    descricao: document.querySelector('#descricao').value,
-    dataInicio: document.querySelector('#dataIni').value,
-    dataTermino: document.querySelector('#dataFim').value,
+    descricao: descricao.value,
+    dataInicio: dataInicio.value,
+    dataTermino: dataTermino.value,
     lat: marker.getPosition().lat(),
     lng: marker.getPosition().lng()
   };
@@ -180,18 +200,59 @@ exitForm.addEventListener('click', () => {
   form.classList.add('hide')
 })
 
+function showFormEdit() {
+  editing = true;
+  form.classList.remove('hide')
+  buttonChange.setAttribute('id', 'buttonChange')
+  buttonChange.textContent = 'Salvar alterações'
+  let divButton = document.querySelector('.button-event-form')
+  divButton.replaceChild(buttonChange, buttonSave)
+  buttonChange.addEventListener('click', () => {
+    console.log('Change')
+  })
+}
+
+function hideFormEdit() {
+  editing = false;
+  form.classList.add('hide')
+}
+
 /*Card*/
-function createCard(object) {
+function createCard(object, index) {
   let divCards = document.querySelector('.cards')
 
   let card = document.createElement('div')
   card.classList.add('card')
   divCards.appendChild(card)
 
+  let cardHeader = document.createElement('div')
+  cardHeader.classList.add('card-header')
+  card.appendChild(cardHeader)
+
   let title = document.createElement('div')
   title.classList.add('card-title')
   title.textContent = object.titulo
-  card.appendChild(title)
+  cardHeader.appendChild(title)
+
+  let cardActions = document.createElement('div')
+  cardActions.classList.add('card-actions')
+  cardHeader.appendChild(cardActions)
+
+  let buttonEdit = document.createElement('button')
+  buttonEdit.setAttribute('id', 'editButton')
+  let iconEdit = document.createElement('img')
+  iconEdit.setAttribute('src', './img/edit-button.svg')
+  buttonEdit.appendChild(iconEdit)
+  cardActions.appendChild(buttonEdit)
+
+  buttonEdit.addEventListener('click', showFormEdit)
+
+  let buttonDelete = document.createElement('button')
+  buttonDelete.setAttribute('id', 'deleteButton')
+  let iconDelete = document.createElement('img')
+  iconDelete.setAttribute('src', './img/delete-button.svg')
+  buttonDelete.appendChild(iconDelete)
+  cardActions.appendChild(buttonDelete)
 
   let desc = document.createElement('div')
   desc.classList.add('desc')
@@ -210,4 +271,74 @@ function createCard(object) {
   showButton.textContent = 'Mostrar'
   divButton.appendChild(showButton)
   card.appendChild(divButton)
+
+  showButton.addEventListener('click', () => {
+    map.setCenter(markers[index].getPosition())
+    for (let markerSalvo of markers) {
+      markerSalvo.setIcon(mapPinShowEvent)
+    }
+    markers[index].setIcon(mapPinFocusEvent)
+  })
+}
+
+function sucessButton() {
+  setTimeout(() => {
+    buttonSave.style.background = '#011F39'; //blue
+    buttonSave.textContent = 'Salvar evento';
+    buttonSave.style.cursor = 'pointer'
+    buttonSave.disabled = false;
+  }, 2000);
+  buttonSave.style.transition = '0.2s ease-in'
+  buttonSave.style.background = '#53a653'; //green
+  buttonSave.textContent = 'Salvo!'
+  buttonSave.style.cursor = 'not-allowed'
+  buttonSave.disabled = true;
+
+
+  inputEvent.value = '';
+  descricao.value = '';
+  dataInicio.value = '';
+  dataTermino.value = '';
+}
+
+function createMarkerWarning() {
+  setTimeout(() => {
+    buttonSave.style.background = '#011F39'; //blue
+    buttonSave.textContent = 'Salvar evento';
+    buttonSave.style.cursor = 'pointer'
+    buttonSave.disabled = false;
+  }, 2000);
+  buttonSave.style.transition = '0.2s ease-in'
+  buttonSave.style.background = '#A9A9A9'; //yellow
+  buttonSave.textContent = 'Crie um marcador'
+  buttonSave.style.cursor = 'not-allowed'
+  buttonSave.disabled = true;
+}
+
+function inputWarning() {
+  setTimeout(() => {
+    buttonSave.style.background = '#011F39'; //blue
+    buttonSave.textContent = 'Salvar evento';
+    buttonSave.style.cursor = 'pointer'
+    buttonSave.disabled = false;
+  }, 2000);
+  buttonSave.style.transition = '0.2s ease-in'
+  buttonSave.style.background = '#ff3333'; //yellow
+  buttonSave.textContent = 'Digite o nome'
+  buttonSave.style.cursor = 'not-allowed'
+  buttonSave.disabled = true;
+}
+
+function errorButton(){
+  setTimeout(() => {
+    buttonSave.style.background = '#011F39'; //blue
+    buttonSave.textContent = 'Salvar evento';
+    buttonSave.style.cursor = 'pointer'
+    buttonSave.disabled = false;
+  }, 3000);
+  buttonSave.style.transition = '0.3s ease-in'
+  buttonSave.style.background = '#ff3333'; //red
+  buttonSave.textContent = 'Erro!'
+  buttonSave.style.cursor = 'not-allowed'
+  buttonSave.disabled = true;
 }
