@@ -54,7 +54,7 @@ const atualizarPonto = async (req, res) => {
 const pesquisaPorTexto = async (req, res) => {
   const points = await Point.find(
     { $text: { $search: req.body.pesquisa } },
-    { _id: false, __v: false }
+    { __v: false }
   )
     .then((result) => result)
     .catch((e) => res.status(400).send(e));
