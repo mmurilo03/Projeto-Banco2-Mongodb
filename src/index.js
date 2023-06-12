@@ -376,11 +376,12 @@ async function createCard(element) {
   card.appendChild(divButton);
 
   showButton.addEventListener("click", () => {
-    map.setCenter(markers[index].getPosition());
+    let marker = markers.find((m) => m.id === element)
+    map.setCenter(marker.getPosition());
     for (let markerSalvo of markers) {
       markerSalvo.setIcon(mapPinShowEvent);
     }
-    markers[index].setIcon(mapPinFocusEvent);
+    marker.setIcon(mapPinFocusEvent);
   });
 }
 
