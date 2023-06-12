@@ -177,23 +177,40 @@ async function mostrar() {
     scaledSize: new google.maps.Size(30, 40), // scaled size
   };
 
-  for (let evento of eventos) {
+  for (let i = (eventos.length-1); i>=0; i--){
     let markerSalvo = new google.maps.Marker({
       position: {
-        lat: Number(evento.localizacao.split(" ")[1]),
-        lng: Number(evento.localizacao.split(" ")[0]),
+        lat: Number(eventos[i].localizacao.split(" ")[1]),
+        lng: Number(eventos[i].localizacao.split(" ")[0]),
       },
       map,
-      titulo: evento.titulo,
-      descricao: evento.descricao,
-      dataInicio: evento.dataInicio,
-      dataTermino: evento.dataTermino,
-      id: evento._id,
+      titulo: eventos[i].titulo,
+      descricao: eventos[i].descricao,
+      dataInicio: eventos[i].dataInicio,
+      dataTermino: eventos[i].dataTermino,
+      id: eventos[i]._id,
       icon: mapPinShowEvent,
     });
-    createCard(evento, eventos.indexOf(evento));
+    createCard(eventos[i], eventos.indexOf(eventos[i]));
     markers.push(markerSalvo);
   }
+  // for (let evento of eventos) {
+  //   let markerSalvo = new google.maps.Marker({
+  //     position: {
+  //       lat: Number(evento.localizacao.split(" ")[1]),
+  //       lng: Number(evento.localizacao.split(" ")[0]),
+  //     },
+  //     map,
+  //     titulo: evento.titulo,
+  //     descricao: evento.descricao,
+  //     dataInicio: evento.dataInicio,
+  //     dataTermino: evento.dataTermino,
+  //     id: evento._id,
+  //     icon: mapPinShowEvent,
+  //   });
+  //   createCard(evento, eventos.indexOf(evento));
+  //   markers.push(markerSalvo);
+  // }
 }
 
 let showListButton = document.querySelector("#menuBarButton");
