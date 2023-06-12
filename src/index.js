@@ -138,6 +138,22 @@ async function editar(index) {
     });
 }
 
+async function destroy(index){
+  await fetch(`http://localhost:3000/pontos/${markers[index].id}`, {
+    method: "DELETE",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+  })
+    .then((response) => {
+      sucessButton();
+    })
+    .catch((error) => {
+      errorButton();
+    });
+}
+
 /*Mostrar lista*/
 
 async function mostrar() {
@@ -283,6 +299,11 @@ function createCard(object, index) {
   iconDelete.setAttribute("src", "./img/delete-button.svg");
   buttonDelete.appendChild(iconDelete);
   cardActions.appendChild(buttonDelete);
+  buttonDelete.addEventListener("click", async () => {
+    destroy(index)
+    removeCardEvents();
+    await mostrar();
+  })
 
   let desc = document.createElement("div");
   desc.classList.add("desc");
