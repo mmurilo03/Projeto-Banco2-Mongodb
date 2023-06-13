@@ -374,20 +374,34 @@ body {
   padding-top: 2.5vw;
 }
 
-#buttonEvent,
-#buttonChange{
+.button-event,
+.button-change{
   background-color: #011F39;
   color: white;
   width: 15vw;
   height: 2.5vw;
 }
 
-#buttonEvent:hover,
-#buttonChange:hover{
+.button-event:hover,
+.button-change:hover{
   background-color: #0559a1;
 }
 
 .form-register.hide{
+  width: 0;
+  height: 0;
+  pointer-events: none;
+  display: none;
+}
+
+.button-event.hide{
+  width: 0;
+  height: 0;
+  pointer-events: none;
+  display: none;
+}
+
+.button-change.hide{
   width: 0;
   height: 0;
   pointer-events: none;
