@@ -12,6 +12,7 @@ let pesq;
 let form = document.querySelector(".form-register");
 let listEvents = document.querySelector(".event-list");
 let divButtonForm = document.querySelector(".button-event-form");
+let confirmDelete = document.querySelector(".confirm-delete");
 
 /*Elements form */
 let titleForm = document.querySelector("#titleForm");
@@ -373,10 +374,52 @@ async function createCard(element) {
   iconDelete.classList.add("fa-trash");
   buttonDelete.appendChild(iconDelete);
   cardActions.appendChild(buttonDelete);
+
+  let divOcult = document.querySelector('.exit-delete')
+  let decisionDelete = document.querySelector('.decision-delete')
+  
   buttonDelete.addEventListener("click", async () => {
+    if(document.querySelector('#exit-delete')){
+      divOcult.removeChild(document.querySelector("#exit-delete"))
+      decisionDelete.removeChild(document.querySelector("#yesDelete"))
+      decisionDelete.removeChild(document.querySelector("#noDelete"))
+    }
+
+
+    confirmDelete.classList.remove('hide')
+    let ocultDelete = document.createElement("button")
+    ocultDelete.setAttribute("id", "exit-delete")
+    let ocultDeleteIcon = document.createElement("o")
+    ocultDeleteIcon.classList.add("fas")
+    ocultDeleteIcon.classList.add("fa-times")
+    ocultDelete.appendChild(ocultDeleteIcon)
+    divOcult.appendChild(ocultDelete)
+
+    let yesDelete = document.createElement("button")
+    yesDelete.setAttribute("id", "yesDelete")
+    yesDelete.textContent = "Sim"
+    let noDelete = document.createElement("button")
+    noDelete.setAttribute("id", "noDelete")
+    noDelete.textContent = "Não"
+
+    decisionDelete.appendChild(yesDelete)
+    decisionDelete.appendChild(noDelete)
+
+    ocultDelete.addEventListener('click', () => {
+      confirmDelete.classList.add('hide')
+    })
+
+    yesDelete.addEventListener('click', async () => {
     await destroy(element);
     removeCardEvents();
     await mostrar();
+    confirmDelete.classList.add('hide')
+    })
+
+    noDelete.addEventListener('click', () => {
+      confirmDelete.classList.add('hide')
+
+    })
   });
 
   let desc = document.createElement("div");
