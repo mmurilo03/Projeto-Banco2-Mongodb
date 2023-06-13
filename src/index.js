@@ -84,6 +84,7 @@ buttonSave.addEventListener("click", async () => {
     if (isClicked && showList) {
       await salvar();
       removeCardEvents();
+      removeMarker()
       await mostrar();
     }
   }
@@ -95,6 +96,7 @@ searchEvent.addEventListener("keyup", async () => {
   let eventos;
   if (searchEvent.value == "") {
     removeCardEvents();
+    removeMarker()
     await mostrar();
   } else {
     pesq = setTimeout(async () => {
@@ -252,6 +254,7 @@ buttonExitList.addEventListener("click", () => {
   showList = false;
   listEvents.classList.add("hide");
   removeCardEvents();
+  removeMarker()
 })
 
 function removeCardEvents() {
@@ -260,6 +263,9 @@ function removeCardEvents() {
     let card = document.querySelector(".card");
     cards.removeChild(card);
   }
+}
+
+function removeMarker(){
   for (let markerSalvo of markers) {
     markerSalvo.setMap(null);
   }
@@ -362,6 +368,7 @@ async function createCard(element) {
       console.log("Editar");
       await editar(element);
       removeCardEvents();
+      removeMarker()
       await mostrar();
       hideFormEdit();
     });
@@ -412,6 +419,7 @@ async function createCard(element) {
     yesDelete.addEventListener('click', async () => {
     await destroy(element);
     removeCardEvents();
+    removeMarker()
     await mostrar();
     confirmDelete.classList.add('hide')
     })
