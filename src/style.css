@@ -49,8 +49,8 @@ button:hover {
   font-weight: bold;
 }
 
-.title-header img {
-  width: 2vw;
+.title-header p {
+  font-size: 1.5vw;
 }
 
 .title {
@@ -92,6 +92,7 @@ body {
   position: absolute;
 }
 
+
 /*menu hamburguer*/
 
 .menu-bar {
@@ -120,16 +121,15 @@ body {
 
 #menuBarButton,
 #exitForm,
-#exitListButton {
+#exitListButton,
+#exitDeleteForm {
   all: unset;
   cursor:pointer;
 }
 
-#menuBar {
-  height: 3vw;
-  width: 3vw;
+#menuBarButton{
+  font-size: 3vw;
 }
-
 
 /*lista*/
 
@@ -410,5 +410,84 @@ body {
 
 #exitForm{
   cursor: pointer;
+}
+
+/*Confirm delete*/
+.confirm-delete{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(16, 17, 16, 0.3);
+}
+
+.confirm-delete.hide{
+  width: 0;
+  height: 0;
+  display: none;
+}
+
+.delete-confirmation{
+  display: flex;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  width: 40vw;
+  height: 28vh;
+  background-color: #fff;
+  pointer-events: none;
+  -webkit-box-shadow: 1px 4px 21px -7px rgba(0,0,0,0.51);
+  -moz-box-shadow: 1px 4px 21px -7px rgba(0,0,0,0.51);
+  box-shadow: 1px 4px 21px -7px rgba(0,0,0,0.51);
+}
+
+.title-delete{
+  pointer-events: none;
+  flex-wrap: wrap;
+}
+
+.decision-delete{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2vw;
+  pointer-events: all;
+  padding-top: 1vw;
+}
+
+.decision-delete button{
+  background-color: #011F39;
+  color: white;
+  width: 5vw;
+  height: 6vh;
+  pointer-events: all;
+}
+
+.exit-delete{
+  width: 98%;
+  display: flex;
+  justify-content: flex-end;
+}
+
+#exit-delete{
+  cursor: pointer;
+  pointer-events: all;
+  background-color: #fff;
+}
+
+#exit-delete:hover{
+  background-color: #011F39;
+  color: #fff;
+}
+
+#noDelete{
+  background-color: #CD1818;
+}
+
+#yesDelete{
+  background-color: #379237;
 }
 

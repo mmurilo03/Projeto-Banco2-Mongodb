@@ -33,9 +33,15 @@ async function initMap() {
     disableDefaultUI: true,
   });
 
+  
+
   map.addListener("click", (event) => {
     if (document.querySelector(".button-change")) {
       divButtonForm.removeChild(document.querySelector(".button-change"));
+      inputEvent.value = "";
+      descricao.value = "";
+      dataInicio.value = "";
+      dataTermino.value = "";
     }
     buttonSave.classList.remove("hide");
     isClicked = true;
@@ -133,7 +139,11 @@ async function salvar() {
     body: JSON.stringify(obj),
   })
     .then((response) => {
-      sucessButton();
+      exitFormSave()
+      inputEvent.value = "";
+      descricao.value = "";
+      dataInicio.value = "";
+      dataTermino.value = "";
     })
     .catch((error) => {
       errorButton();
@@ -182,7 +192,9 @@ async function destroy(element) {
       Accept: "application/json",
       "Content-Type": "application/json",
     },
-  });
+  }).then(
+    hideFormEdit()
+  );
 }
 
 /*Mostrar lista*/
@@ -239,7 +251,7 @@ buttonExitList.addEventListener("click", () => {
   showList = false;
   listEvents.classList.add("hide");
   removeCardEvents();
-});
+})
 
 function removeCardEvents() {
   while (document.querySelector(".card")) {
@@ -255,21 +267,16 @@ function removeCardEvents() {
 
 /*Form*/
 function showForm() {
-  if (document.querySelector(".button-change")) {
-    inputEvent.value = "";
-    descricao.value = "";
-    dataInicio.value = "";
-    dataTermino.value = "";
-  }
-  titleForm.textContent = "Registra Evento";
-
+  titleForm.textContent = "Registrar Evento";
   form.classList.remove("hide");
 }
 
 let exitForm = document.querySelector("#exitForm");
-exitForm.addEventListener("click", () => {
+exitForm.addEventListener("click", exitFormSave)
+
+function exitFormSave(){
   form.classList.add("hide");
-});
+}
 
 async function showFormEdit(element) {
   const response = await fetch(`http://localhost:3000/pontos/${element}`, {
@@ -334,8 +341,9 @@ async function createCard(element) {
 
   let buttonEdit = document.createElement("button");
   buttonEdit.setAttribute("id", "editButton");
-  let iconEdit = document.createElement("img");
-  iconEdit.setAttribute("src", "./img/edit-button.svg");
+  let iconEdit = document.createElement("i");
+  iconEdit.classList.add("fa-solid")
+  iconEdit.classList.add("fa-pen")
   buttonEdit.appendChild(iconEdit);
   cardActions.appendChild(buttonEdit);
 
@@ -360,8 +368,9 @@ async function createCard(element) {
 
   let buttonDelete = document.createElement("button");
   buttonDelete.setAttribute("id", "deleteButton");
-  let iconDelete = document.createElement("img");
-  iconDelete.setAttribute("src", "./img/delete-button.svg");
+  let iconDelete = document.createElement("i");
+  iconDelete.classList.add("fas");
+  iconDelete.classList.add("fa-trash");
   buttonDelete.appendChild(iconDelete);
   cardActions.appendChild(buttonDelete);
   buttonDelete.addEventListener("click", async () => {
