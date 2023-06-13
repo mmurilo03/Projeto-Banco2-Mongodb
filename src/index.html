@@ -5,9 +5,7 @@
   <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
   <link rel="stylesheet" type="text/css" href="./style.css" />
   <script type="module" src="index.js"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-</head>
-
+  <script src="https://kit.fontawesome.com/8becc52120.js" crossorigin="anonymous"></script>
 <body>
   <section class="map">
     <div class="container">
@@ -22,25 +20,47 @@
         </script>
         <div class="title-header">
           <div class="title">
-            <img src="./img/header-icon.svg" alt="" srcset="">
+            <p>
+              <i class="fa-solid fa-map"></i>
+            </p>
             <h1> MARCADOR DE EVENTOS </h1>
             
           </div>
         </div>
+
+        
         <div class="menu-bar">
           <button id="menuBarButton">
-            <img id="menuBar" src="./img/menu-bars.svg" alt="menu-bars" class="">
+            <i class="fas fa-bars"></i>
           </button>
         </div>
+        <div class="confirm-delete hide">
+          <div class="delete-confirmation">
+            <div class="exit-delete">
+              <button id="exit-delete">
+                <i class="fas fa-times"></i>
+              </button>
+              </div>
 
-        <div class="form-register hide">
+            <div class="title-delete">
+              <h2>Deseja deletar o evento "Passear com meu cachorro amanhã quando chegar da academia, fazer comida também"?</h2>
+            </div>
+            
+            <div class="decision-delete">
+              <button id="yesDelete">Sim</button>
+              <button id="noDelete">Não</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-register">
           <div class="exit-form">
           <button id="exitForm">
-          <img src="./img/exit-list.svg" alt="exitForm" id="exitFormIcon">
+            <i class="fas fa-times"></i>
           </button>
           </div>
           <div class="title-form">
-            <h1 id="titleForm"><b>REGISTRAR EVENTO</b></h1>
+            <h1 id="titleForm"><b>Registrar</b></h1>
             <h2 id="coordinates">389218312, -21381283</h2>
           </div>
           <div class="infos-event">
@@ -76,7 +96,7 @@
       <div class="event-list hide">
         <div class="exit">
           <button id="exitListButton">
-            <img id="exitList" src="./img/exit-list.svg" alt="exit-list" class="">
+            <i class="fas fa-times"></i>
           </button>
         </div>
         <div class="search">
@@ -91,8 +111,8 @@
                 
               </div>
               <div class="card-actions">
-                <button id="editButton"><img src="./img/edit-button.svg" alt="edit-button" srcset=""></button>
-                <button id="deleteButton"><img src="./img/delete-button.svg" alt="delete-button" srcset=""></button>
+                <button id="editButton"><i class="fas fa-trash"></i></button>
+                <button id="deleteButton"><i class="fas fa-pencil"></i></button>
               </div>
             </div>
             <div class="desc">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Laudantium libero laboriosam
