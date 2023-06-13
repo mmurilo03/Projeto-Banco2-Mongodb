@@ -61,10 +61,19 @@ const pesquisaPorTexto = async (req, res) => {
   res.status(200).send(points);
 };
 
+const pesquisaPorId = async (req, res) => {
+  await Point.findById(req.params.id)
+    .then((result) => {
+        res.status(200).send(result);
+    })
+    .catch((e) => res.status(404).send("Ponto não encontrado"));
+};
+
 module.exports = {
   listarPontos,
   salvarPonto,
   deletarPonto,
   atualizarPonto,
   pesquisaPorTexto,
+  pesquisaPorId
 };
