@@ -11,8 +11,10 @@ let pesq;
 /*Elements*/
 let form = document.querySelector(".form-register");
 let listEvents = document.querySelector(".event-list");
+let divButtonForm = document.querySelector(".button-event-form");
 
 /*Elements form */
+let titleForm = document.querySelector("#titleForm");
 let coordinates = document.querySelector("#coordinates");
 let inputEvent = document.querySelector("#titulo");
 let descricao = document.querySelector("#descricao");
@@ -32,6 +34,10 @@ async function initMap() {
   });
 
   map.addListener("click", (event) => {
+    if (document.querySelector(".button-change")) {
+      divButtonForm.removeChild(document.querySelector(".button-change"));
+    }
+    buttonSave.classList.remove("hide");
     isClicked = true;
     showForm();
     coordinates.textContent = `${event.latLng.lat()}, ${event.latLng.lng()}`;
@@ -55,9 +61,10 @@ async function initMap() {
 initMap();
 
 /*Salvar*/
-let buttonSave = document.querySelector("#buttonEvent");
+let buttonSave = document.querySelector(".button-event");
+buttonSave.textContent = "Salvar evento";
+
 buttonSave.addEventListener("click", async () => {
-  buttonSave.textContent = "Salvar evento";
   if (inputEvent.value === "") {
     inputWarning();
   } else if (isClicked === false) {
@@ -175,13 +182,7 @@ async function destroy(element) {
       Accept: "application/json",
       "Content-Type": "application/json",
     },
-  })
-    .then((response) => {
-      sucessButton();
-    })
-    .catch((error) => {
-      errorButton();
-    });
+  });
 }
 
 /*Mostrar lista*/
@@ -242,16 +243,26 @@ buttonExitList.addEventListener("click", () => {
 
 function removeCardEvents() {
   while (document.querySelector(".card")) {
-    // markerSalvo.setMap(null);
     let cards = document.querySelector(".cards");
     let card = document.querySelector(".card");
     cards.removeChild(card);
+  }
+  for (let markerSalvo of markers) {
+    markerSalvo.setMap(null);
   }
   markers = [];
 }
 
 /*Form*/
 function showForm() {
+  if (document.querySelector(".button-change")) {
+    inputEvent.value = "";
+    descricao.value = "";
+    dataInicio.value = "";
+    dataTermino.value = "";
+  }
+  titleForm.textContent = "Registra Evento";
+
   form.classList.remove("hide");
 }
 
@@ -269,14 +280,10 @@ async function showFormEdit(element) {
     },
   });
   const object = await response.json();
-  // let divButton = document.querySelector(".button-event-form");
-  // if (!editing) {
-  //   divButton.replaceChild(buttonChange, buttonSave);
-  // }
-  // editing = true;
+
   form.classList.remove("hide");
-  // buttonChange.setAttribute("id", "buttonChange");
-  buttonSave.textContent = "Salvar alterações";
+
+  titleForm.textContent = "Editar Evento";
   coordinates.textContent = `${object.localizacao.split(" ")[1]}, ${
     object.localizacao.split(" ")[0]
   }`;
@@ -284,12 +291,12 @@ async function showFormEdit(element) {
   descricao.value = object.descricao;
   dataInicio.value = object.dataInicio.substr(0, 10);
   dataTermino.value = object.dataTermino.substr(0, 10);
-  buttonSave.addEventListener("click", async () => {
-    await editar(element);
-    removeCardEvents();
-    await mostrar();
-    hideFormEdit();
-  });
+  // buttonChange.addEventListener("click", async () => {
+  //   await editar(element);
+  //   removeCardEvents();
+  //   await mostrar();
+  //   hideFormEdit();
+  // });
 }
 
 function hideFormEdit() {
@@ -334,6 +341,21 @@ async function createCard(element) {
 
   buttonEdit.addEventListener("click", async () => {
     await showFormEdit(element);
+    let buttonChange = document.createElement("button");
+    buttonChange.textContent = "Salvar alterações";
+    buttonChange.classList.add("button-change");
+    buttonSave.classList.add("hide");
+    if (document.querySelector(".button-change")) {
+      divButtonForm.removeChild(document.querySelector(".button-change"));
+    }
+    divButtonForm.appendChild(buttonChange);
+    buttonChange.addEventListener("click", async () => {
+      console.log("Editar");
+      await editar(element);
+      removeCardEvents();
+      await mostrar();
+      hideFormEdit();
+    });
   });
 
   let buttonDelete = document.createElement("button");
@@ -376,7 +398,7 @@ async function createCard(element) {
   card.appendChild(divButton);
 
   showButton.addEventListener("click", () => {
-    let marker = markers.find((m) => m.id === element)
+    let marker = markers.find((m) => m.id === element);
     map.setCenter(marker.getPosition());
     for (let markerSalvo of markers) {
       markerSalvo.setIcon(mapPinShowEvent);
@@ -388,7 +410,11 @@ async function createCard(element) {
 function sucessButton() {
   setTimeout(() => {
     buttonSave.style.background = "#011F39"; //blue
-    buttonSave.textContent = "Salvar evento";
+    if (document.querySelector(".button-event")) {
+      buttonSave.textContent = "Salvar evento";
+    } else if (document.querySelector(".button-change")) {
+      buttonSave.textContent = "Salvar alterações";
+    }
     buttonSave.style.cursor = "pointer";
     buttonSave.disabled = false;
   }, 2000);
@@ -421,7 +447,11 @@ function createMarkerWarning() {
 function inputWarning() {
   setTimeout(() => {
     buttonSave.style.background = "#011F39"; //blue
-    buttonSave.textContent = "Salvar evento";
+    if (document.querySelector(".button-event")) {
+      buttonSave.textContent = "Salvar evento";
+    } else if (document.querySelector(".button-change")) {
+      buttonSave.textContent = "Salvar alterações";
+    }
     buttonSave.style.cursor = "pointer";
     buttonSave.disabled = false;
   }, 2000);
@@ -435,7 +465,11 @@ function inputWarning() {
 function errorButton() {
   setTimeout(() => {
     buttonSave.style.background = "#011F39"; //blue
-    buttonSave.textContent = "Salvar evento";
+    if (document.querySelector(".button-event")) {
+      buttonSave.textContent = "Salvar evento";
+    } else if (document.querySelector(".button-change")) {
+      buttonSave.textContent = "Salvar alterações";
+    }
     buttonSave.style.cursor = "pointer";
     buttonSave.disabled = false;
   }, 3000);
