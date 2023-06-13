@@ -6,7 +6,7 @@ let mapPin;
 let mapPinShowEvent;
 let mapPinFocusEvent;
 let showList = false;
-let editing;
+let pesq;
 
 /*Elements*/
 let form = document.querySelector(".form-register");
@@ -18,6 +18,7 @@ let inputEvent = document.querySelector("#titulo");
 let descricao = document.querySelector("#descricao");
 let dataInicio = document.querySelector("#dataIni");
 let dataTermino = document.querySelector("#dataFim");
+let searchEvent = document.querySelector("#searchEvent");
 
 async function initMap() {
   //@ts-ignore
@@ -32,11 +33,6 @@ async function initMap() {
 
   map.addListener("click", (event) => {
     isClicked = true;
-    if (editing) {
-      hideFormEdit();
-      let buttonForm = document.querySelector(".button-event-form");
-      buttonForm.replaceChild(buttonSave, buttonChange);
-    }
     showForm();
     coordinates.textContent = `${event.latLng.lat()}, ${event.latLng.lng()}`;
     marker.position = { lat: event.latLng.lat(), lng: event.latLng.lng() };
@@ -60,7 +56,6 @@ initMap();
 
 /*Salvar*/
 let buttonSave = document.querySelector("#buttonEvent");
-let buttonChange = document.createElement("button");
 buttonSave.addEventListener("click", async () => {
   buttonSave.textContent = "Salvar evento";
   if (inputEvent.value === "") {
@@ -74,10 +69,37 @@ buttonSave.addEventListener("click", async () => {
 
     if (isClicked && showList) {
       await salvar();
-      await mostrar();
       removeCardEvents();
       await mostrar();
     }
+  }
+});
+
+searchEvent.addEventListener("keyup", async () => {
+  console.log(searchEvent.value);
+  clearTimeout(pesq);
+  let eventos;
+  if (searchEvent.value == "") {
+    removeCardEvents();
+    await mostrar();
+  } else {
+    pesq = setTimeout(async () => {
+      const obj = { pesquisa: searchEvent.value };
+      const response = await fetch(`http://localhost:3000/pontos/pesquisa`, {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(obj),
+      });
+      eventos = await response.json();
+      console.log(eventos);
+      removeCardEvents();
+      for (let evento of eventos) {
+        createCard(evento._id);
+      }
+    }, 300);
   }
 });
 
@@ -89,11 +111,11 @@ async function salvar() {
     lng: marker.getPosition().lng(),
   };
 
-  if(dataInicio.value){
-    obj.dataInicio = dataInicio.value
+  if (dataInicio.value) {
+    obj.dataInicio = dataInicio.value;
   }
-  if(dataTermino.value){
-    obj.dataTermino = dataTermino.value
+  if (dataTermino.value) {
+    obj.dataTermino = dataTermino.value;
   }
   await fetch("http://localhost:3000/pontos", {
     method: "POST",
@@ -112,17 +134,25 @@ async function salvar() {
   isClicked = false;
 }
 
-async function editar(index) {
+async function editar(element) {
+  const response = await fetch(`http://localhost:3000/pontos/${element}`, {
+    method: "GET",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+  });
+  const object = await response.json();
   const obj = {
     titulo: inputEvent.value,
     descricao: descricao.value,
     dataInicio: dataInicio.value,
     dataTermino: dataTermino.value,
-    lat: markers[index].position.lat(),
-    lng: markers[index].position.lng(),
+    lat: object.localizacao.split(" ")[1],
+    lng: object.localizacao.split(" ")[0],
   };
 
-  await fetch(`http://localhost:3000/pontos/${markers[index].id}`, {
+  await fetch(`http://localhost:3000/pontos/${element}`, {
     method: "PATCH",
     headers: {
       Accept: "application/json",
@@ -138,8 +168,8 @@ async function editar(index) {
     });
 }
 
-async function destroy(index){
-  await fetch(`http://localhost:3000/pontos/${markers[index].id}`, {
+async function destroy(element) {
+  await fetch(`http://localhost:3000/pontos/${element}`, {
     method: "DELETE",
     headers: {
       Accept: "application/json",
@@ -165,7 +195,6 @@ async function mostrar() {
     },
   });
   const eventos = await response.json();
-  console.log(eventos);
 
   mapPinShowEvent = {
     url: "./img/map-pin-show-event.svg", // url
@@ -177,7 +206,7 @@ async function mostrar() {
     scaledSize: new google.maps.Size(30, 40), // scaled size
   };
 
-  for (let i = (eventos.length-1); i>=0; i--){
+  for (let i = eventos.length - 1; i >= 0; i--) {
     let markerSalvo = new google.maps.Marker({
       position: {
         lat: Number(eventos[i].localizacao.split(" ")[1]),
@@ -191,32 +220,14 @@ async function mostrar() {
       id: eventos[i]._id,
       icon: mapPinShowEvent,
     });
-    createCard(eventos[i], eventos.indexOf(eventos[i]));
+    createCard(eventos[i]._id);
     markers.push(markerSalvo);
   }
-  // for (let evento of eventos) {
-  //   let markerSalvo = new google.maps.Marker({
-  //     position: {
-  //       lat: Number(evento.localizacao.split(" ")[1]),
-  //       lng: Number(evento.localizacao.split(" ")[0]),
-  //     },
-  //     map,
-  //     titulo: evento.titulo,
-  //     descricao: evento.descricao,
-  //     dataInicio: evento.dataInicio,
-  //     dataTermino: evento.dataTermino,
-  //     id: evento._id,
-  //     icon: mapPinShowEvent,
-  //   });
-  //   createCard(evento, eventos.indexOf(evento));
-  //   markers.push(markerSalvo);
-  // }
 }
 
 let showListButton = document.querySelector("#menuBarButton");
 
 showListButton.addEventListener("click", () => {
-  removeCardEvents();
   showList = true;
   listEvents.classList.remove("hide");
   mostrar();
@@ -230,8 +241,8 @@ buttonExitList.addEventListener("click", () => {
 });
 
 function removeCardEvents() {
-  for (let markerSalvo of markers) {
-    markerSalvo.setMap(null);
+  while (document.querySelector(".card")) {
+    // markerSalvo.setMap(null);
     let cards = document.querySelector(".cards");
     let card = document.querySelector(".card");
     cards.removeChild(card);
@@ -249,24 +260,32 @@ exitForm.addEventListener("click", () => {
   form.classList.add("hide");
 });
 
-function showFormEdit(index) {
-  let divButton = document.querySelector(".button-event-form");
-  if (!editing) {
-    divButton.replaceChild(buttonChange, buttonSave);
-  }
-  editing = true;
+async function showFormEdit(element) {
+  const response = await fetch(`http://localhost:3000/pontos/${element}`, {
+    method: "GET",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+  });
+  const object = await response.json();
+  // let divButton = document.querySelector(".button-event-form");
+  // if (!editing) {
+  //   divButton.replaceChild(buttonChange, buttonSave);
+  // }
+  // editing = true;
   form.classList.remove("hide");
-  buttonChange.setAttribute("id", "buttonChange");
-  buttonChange.textContent = "Salvar alterações";
-  coordinates.textContent = `${markers[index].position.lat()}, ${markers[
-    index
-  ].position.lng()}`;
-  inputEvent.value = markers[index].titulo;
-  descricao.value = markers[index].descricao;
-  dataInicio.value = markers[index].dataInicio.substr(0, 10);
-  dataTermino.value = markers[index].dataTermino.substr(0, 10);
-  buttonChange.addEventListener("click", async () => {
-    await editar(index);
+  // buttonChange.setAttribute("id", "buttonChange");
+  buttonSave.textContent = "Salvar alterações";
+  coordinates.textContent = `${object.localizacao.split(" ")[1]}, ${
+    object.localizacao.split(" ")[0]
+  }`;
+  inputEvent.value = object.titulo;
+  descricao.value = object.descricao;
+  dataInicio.value = object.dataInicio.substr(0, 10);
+  dataTermino.value = object.dataTermino.substr(0, 10);
+  buttonSave.addEventListener("click", async () => {
+    await editar(element);
     removeCardEvents();
     await mostrar();
     hideFormEdit();
@@ -274,12 +293,19 @@ function showFormEdit(index) {
 }
 
 function hideFormEdit() {
-  editing = false;
   form.classList.add("hide");
 }
 
 /*Card*/
-function createCard(object, index) {
+async function createCard(element) {
+  const response = await fetch(`http://localhost:3000/pontos/${element}`, {
+    method: "GET",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+  });
+  const object = await response.json();
   let divCards = document.querySelector(".cards");
 
   let card = document.createElement("div");
@@ -306,8 +332,8 @@ function createCard(object, index) {
   buttonEdit.appendChild(iconEdit);
   cardActions.appendChild(buttonEdit);
 
-  buttonEdit.addEventListener("click", () => {
-    showFormEdit(index);
+  buttonEdit.addEventListener("click", async () => {
+    await showFormEdit(element);
   });
 
   let buttonDelete = document.createElement("button");
@@ -317,10 +343,10 @@ function createCard(object, index) {
   buttonDelete.appendChild(iconDelete);
   cardActions.appendChild(buttonDelete);
   buttonDelete.addEventListener("click", async () => {
-    destroy(index)
+    await destroy(element);
     removeCardEvents();
     await mostrar();
-  })
+  });
 
   let desc = document.createElement("div");
   desc.classList.add("desc");
@@ -329,11 +355,16 @@ function createCard(object, index) {
 
   let datasDiv = document.createElement("div");
   datasDiv.classList.add("dates");
-  datasDiv.textContent = `Data Inicio: ${object.dataInicio.substr(8, 2)}/${
-    object.dataInicio.substr(5, 2)
-  }/${object.dataInicio.substr(0, 4)} Data Fim: ${object.dataTermino.substr(8, 2)}/${
-    object.dataTermino.substr(5, 2)
-  }/${object.dataTermino.substr(0, 4)}`;
+  datasDiv.textContent = `Data Inicio: ${object.dataInicio.substr(
+    8,
+    2
+  )}/${object.dataInicio.substr(5, 2)}/${object.dataInicio.substr(
+    0,
+    4
+  )} Data Fim: ${object.dataTermino.substr(8, 2)}/${object.dataTermino.substr(
+    5,
+    2
+  )}/${object.dataTermino.substr(0, 4)}`;
   card.appendChild(datasDiv);
 
   let divButton = document.createElement("div");
@@ -345,11 +376,12 @@ function createCard(object, index) {
   card.appendChild(divButton);
 
   showButton.addEventListener("click", () => {
-    map.setCenter(markers[index].getPosition());
+    let marker = markers.find((m) => m.id === element)
+    map.setCenter(marker.getPosition());
     for (let markerSalvo of markers) {
       markerSalvo.setIcon(mapPinShowEvent);
     }
-    markers[index].setIcon(mapPinFocusEvent);
+    marker.setIcon(mapPinFocusEvent);
   });
 }
 
